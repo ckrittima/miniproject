@@ -27,7 +27,7 @@ class Restaurant(models.Model):
     picture = models.ImageField(upload_to='uploads/')
     open_time = models.TimeField(auto_now=False)
     close_time = models.TimeField(auto_now=False, null=False, default=0)
-    rating = models.SmallIntegerField()
+    rating = models.SmallIntegerField(default=0)
     approve_by = models.ForeignKey(User, on_delete=models.CASCADE)
     approve_date = models.DateField()
 
