@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+  <style>
+    #img-bg {
+      background-image: url({% static 'img/anton-murygin-jD7WYFNJ-0s-unsplash.jpg' %});
+      background-position: center;
+      background-size: cover;
+      width: 100%;
+      height: 400px;
+    }
+    .input-group {
+      justify-content: center;
+      display: flex;
+      align-items: center;
+      height: inherit;
+      flex-direction: column;
+    }
+    .input-group input {
+      width: 50vmin !important;
+    }
+    .input-group h1 {
+      color: #fff;
+    }
+    .row {
+      padding: 30px;
+    }
+  </style>
+  <div id="img-bg">
+    <div class="input-group">
+      <h1>ค้นหาร้านอร่อยในสถาบัน</h1>
+      <form class="form-inline">
+        <input
+          class="form-control mr-sm-2"
+          type="search"
+          placeholder="Search"
+          aria-label="Search"
+        />
+        <button class="btn btn-warning my-2 my-sm-0" type="submit">
+          Search
+        </button>
+      </form>
+    </div>
+  </div>
+  <div class="container">
+    {% for key, values in restaurant.items %}
+      <div class="row">
+        <div class="col-md-12">
+          <h4>คณะ{{ values.name }}</h4>
+        </div>
+        {% for res in values.res %}
+          <div class="col-md-3">
+            <div class="card" style="width: 18rem;">
+              <img src="{{ res.picture.url }}" class="card-img-top" alt="..." />
+              <div class="card-body">
+                <h5 class="card-title">ร้าน{{ res.name }}</h5>
+                <a href="#" class="btn btn-primary">รายละเอียด</a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+        
+      </div>
+    {% endfor %}
+    
+  </div>
+{% endblock  %}
