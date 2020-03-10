@@ -32,21 +32,27 @@
       <h1>{{ restaurant.name }}</h1>
     </div>
   </div>
-  
-<div class='container'>
-    <div class="col-md-12">
-        <h4>รายการอาหาร</h4>
-    </div>
-    {% for item in menu %}
-    <div class='row-md-4 col-md-3'>
-        <div class="card" style="width: 18rem;">
-            <img src="{{ item.food_id.f_picture.url }}" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">{{ item.food_id.name }}</h5>
-                <p class="card-text">{{ item.price }} บาท</p>
-            </div>
+    
+    <div class='container'>
+        <div class="row">
+            <h4>รายละเอียดร้านอาหาร</h4>
+            <p>ร้าน{{ restaurant.name }}</p>
+            <p>เจ้าของร้าน {{ restaurant.owner }}</p>
+            <p>เปิด {{ restaurant.open_time }} - {{ restaurant.close_time }}</p>
         </div>
-    </div>
-</div>
-    {% endfor %}
+        <div class="row">
+            <h4>รายการอาหาร</h4>
+        </div>
+        <div class='row'>
+        {% for item in menu %}
+            <div class='col-md-3'>
+                <div class="card" style="width: 18rem;">
+                    <img src="{{ item.food_id.f_picture.url }}" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item.food_id.name }}</h5>
+                        <p class="card-text">{{ item.price }} บาท</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
 {% endblock %}
