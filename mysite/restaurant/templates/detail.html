@@ -1,5 +1,52 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<div>อีหมู</div>
+  <style>
+    #img-bg {
+      background-image: url({{ restaurant.picture.url }}); #ใส่รูปร้าน
+      background-position: center;
+      background-size: cover;
+      width: 100%;
+      height: 400px;
+    }
+    .text {
+      justify-content: center;
+      display: flex;
+      align-items: center;
+      height: inherit;
+      flex-direction: column;
+    }
+    .text input {
+      width: 50vmin !important;
+    }
+    .text h1 {
+      color: #fff;
+    }
+    .row {
+      padding: 30px;
+    }
+  </style>
+  
+  <div id="img-bg">
+    <div class="text">
+      <h1>{{ restaurant.name }}</h1>
+    </div>
+  </div>
+  
+<div class='container'>
+    <div class="col-md-12">
+        <h4>รายการอาหาร</h4>
+    </div>
+    {% for item in menu %}
+    <div class='row-md-4 col-md-3'>
+        <div class="card" style="width: 18rem;">
+            <img src="{{ item.food_id.f_picture.url }}" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">{{ item.food_id.name }}</h5>
+                <p class="card-text">{{ item.price }} บาท</p>
+            </div>
+        </div>
+    </div>
+</div>
+    {% endfor %}
 {% endblock %}
