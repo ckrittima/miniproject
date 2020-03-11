@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 {% load static %}
+{% load tag_extras %}
   <style>
     #img-bg {
       background-image: url({% static 'img/anton-murygin-jD7WYFNJ-0s-unsplash.jpg' %});
@@ -38,44 +39,86 @@
   </div>
   <div class="container">
     {% if search|length > 0 %}
+      <div class="row">
       {% for res in search %}
-          <div class="col-md-3">
-            <div class="card" style="width: 18rem;">
+          <div class="col-md-3" style="margin-top: 10px">
+            <div class="card" style="height: 100%">
               <img src="{{ res.picture.url }}" class="card-img-top" alt="..." />
-              <div class="card-body">
-                <h5 class="card-title">ร้าน{{ res.name }}</h5>
-                <p class="card-text">เปิด {{ res.open_time }} - {{ res.close_time }}</p>
-                <a href="{% url 'detail' restaurant_id=res.id %}" class="btn btn-primary btn-sm">รายละเอียด</a>
+              <div class="card-body" style="display: flex; flex-direction: column">
+                <div class="card-title" style="display: flex; flex-direction: row; align-items: center">
+                  <h6 style="margin-right: 5px">
+                    <span class="badge {% if res.open_time|time_in_range:res.close_time %}badge-success{% else %}badge-danger{% endif %}">
+                      {% if res.open_time|time_in_range:res.close_time %}เปิด{% else %}ปิด{% endif %}
+                    </span>
+                  </h6>
+                  <h5>ร้าน{{ res.name }}</h5>
+                </div>
+                <p class="card-text" style="flex: 1">เปิด {{ res.open_time }} - {{ res.close_time }}</p>
+                <a href="{% url 'detail' restaurant_id=res.id %}" class="btn btn-primary btn-sm" style="align-self: flex-end">รายละเอียด</a>
               </div>
             </div>
           </div>
         {% endfor %}
+        </div>
     {% else %}
       {% for key, values in restaurant.items %}
         <div class="row">
-          <div class="col-md-11">
+          <div style="flex: 1">
             <h4>คณะ{{ values.name }}</h4>
           </div>
-          <div class="col-md-1">
-            <a href='#'>ดูทั้งหมด</a>
+          <div>
+            <a data-toggle="collapse"
+              href="#collapseExample-{{ key }}" 
+              role="button" 
+              aria-expanded="false" 
+              aria-controls="collapseExample-{{ key }}">ดูทั้งหมด</a>
           </div>
-          {% for res in values.res %}
-            <div class="col-md-3">
-              <div class="card" style="width: 18rem;">
-                <img src="{{ res.picture.url }}" class="card-img-top" alt="..." />
-                <div class="card-body">
-                  <h5 class="card-title">ร้าน{{ res.name }}</h5>
-                  <p class="card-text">เปิด {{ res.open_time }} - {{ res.close_time }}</p>
-                  <a href="{% url 'detail' restaurant_id=res.id %}" class="btn btn-primary btn-sm">รายละเอียด</a>
+          <div class="row" style="border: 1px solid rgba(0, 0, 0, 0.125); border-radius: 3px; padding: 20px;">
+            {% for res in values.res %}
+              {% if forloop.counter <= 4 %}
+                <div class="col-md-3" style="margin-top: 10px">
+                  <div class="card" style="height: 100%">
+                    <img src="{{ res.picture.url }}" class="card-img-top" alt="..." />
+                    <div class="card-body" style="display: flex; flex-direction: column">
+                      {% comment %} <h6><span class="badge badge-secondary">{% if res.open_time|time_in_range:res.close_time %}TRUE {% else %}CLOSE{% endif %}</span></h6> {% endcomment %}
+                      <div class="card-title" style="display: flex; flex-direction: row; align-items: center">
+                        <h6 style="margin-right: 5px">
+                          <span class="badge {% if res.open_time|time_in_range:res.close_time %}badge-success{% else %}badge-danger{% endif %}">
+                            {% if res.open_time|time_in_range:res.close_time %}เปิด{% else %}ปิด{% endif %}
+                          </span>
+                        </h6>
+                        <h5>ร้าน{{ res.name }}</h5>
+                      </div>
+                      <p class="card-text" style="flex: 1">เปิด {{ res.open_time }} - {{ res.close_time }}</p>
+                      <a href="{% url 'detail' restaurant_id=res.id %}" class="btn btn-primary btn-sm" style="align-self: flex-end">รายละเอียด</a>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          {% endfor %}
-          
+              {% else %}
+                <div class="col-md-3 collapse" id="collapseExample-{{ key }}" style="margin-top: 10px">
+                  <div class="card" style="height: 100%">
+                    <img src="{{ res.picture.url }}" class="card-img-top" alt="..." />
+                    <div class="card-body" style="display: flex; flex-direction: column">
+                      <div class="card-title" style="display: flex; flex-direction: row; align-items: center">
+                        <h6 style="margin-right: 5px">
+                          <span class="badge {% if res.open_time|time_in_range:res.close_time %}badge-success{% else %}badge-danger{% endif %}">
+                            {% if res.open_time|time_in_range:res.close_time %}เปิด{% else %}ปิด{% endif %}
+                          </span>
+                        </h6>
+                        <h5>ร้าน{{ res.name }}</h5>
+                      </div>
+                      <p class="card-text" style="flex: 1">เปิด {{ res.open_time }} - {{ res.close_time }}</p>
+                      <a href="{% url 'detail' restaurant_id=res.id %}" 
+                        class="btn btn-primary btn-sm" 
+                        style="align-self: flex-end">รายละเอียด</a>
+                    </div>
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
         </div>
       {% endfor %}
     {% endif %}
-    
-    
   </div>
 {% endblock  %}

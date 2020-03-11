@@ -10,9 +10,9 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterField(
-            model_name='restaurant',
-            name='close_time',
-            field=models.TimeField(default=0),
-        ),
+        # migrations.AlterField(
+        #     model_name='restaurant',
+        #     name='close_time',
+        #     field=models.TimeField(default=0),
+        # ),
     ]

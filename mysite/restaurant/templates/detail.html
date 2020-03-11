@@ -25,28 +25,57 @@
     .row {
       padding: 30px;
     }
+    .card-img-top {
+      height: 20vmin;
+      object-fit: cover;
+    }
   </style>
   
     <div id="img-bg">
         <div class="text">
-        <h1>{{ restaurant.name }}</h1>
+        <h1 style="color: black">{{ restaurant.name }}</h1>
         </div>
     </div>    
     
-    <div class='container'>
+    <div class='container' style="margin-top: 20px">
         <h4>รายละเอียดร้านอาหาร</h4>
-        <div class="row row-cols-1">    
-            {% comment %}   <div class='col'><p>ร้าน{{ restaurant.name }}</p></div> {% endcomment %}
-            <div class='col'><p>เจ้าของร้าน {{ restaurant.owner }}</p></div>
-            <div class='col'><p>เปิด {{ restaurant.open_time }} - {{ restaurant.close_time }}</p></div>
+        <div style="display: flex; flex-flow: row wrap;">
+          <div class="row" style="flex: 1">
+            <ul>
+              <li>เจ้าของร้าน {{ restaurant.owner }}</li>
+              <li>เปิด {{ restaurant.open_time }} - {{ restaurant.close_time }}</li>
+            </ul>
+              {% comment %} <div class='col'><p>เจ้าของร้าน {{ restaurant.owner }}</p></div>
+              <div class='col'><p>เปิด {{ restaurant.open_time }} - {{ restaurant.close_time }}</p></div> {% endcomment %}
+          </div>
+          <div style="">
+            <form method="POST" action="{% url 'detail' restaurant_id=restaurant.id %}">
+              {% csrf_token %}
+              <h4 for="customRange2">คะแนนร้าน{{ restaurant.name }}</h4>
+              {% for i in "x"|rjust:"10" %}
+                {% if forloop.counter <= rating %}
+                  <i class="fas fa-star"></i>
+                {% else %}
+                  <i class="far fa-star"></i>
+                {% endif %}
+              {% endfor %}
+              <div>ให้คะแนนร้าน</div>
+              <div style="display: flex; flex-direction: row">
+                <span>1</span>
+                <input type="range" name="rating" class="custom-range" min="1" max="10" id="customRange2" style="flex: 1; margin: 0 10px;">
+                <span>10</span>
+              </div>
+              
+              <button type="submit" class="btn btn-primary btn-sm btn-block">Submit</button>
+            </form>
+          </div>
         </div>
-        <div class="row">
-            <h4>รายการอาหาร</h4>
-        </div>
-        <div class='row row-cols-4'>
+        
+        <h4>รายการอาหาร</h4>
+        <div class='row'>
         {% for item in menu %}
-            <div class='col'>
-                <div class="card" style="width: 18rem;">
+            <div class='col-md-3 col-sm-6 col-6'>
+                <div class="card" style="margin-top: 10px">
                     <img src="{{ item.food_id.f_picture.url }}" class="card-img-top">
                     <div class="card-body">
                         <h5 class="card-title">{{ item.food_id.name }}</h5>
